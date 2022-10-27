@@ -7,8 +7,8 @@ namespace BasedStrategy.Mouse
 {
     public class MouseWorld : MonoBehaviour
     {
-        public static MouseWorld Instance;
         [SerializeField] private LayerMask _mouseLayerMask;
+        public static MouseWorld Instance;
 
         private void Awake()
         {

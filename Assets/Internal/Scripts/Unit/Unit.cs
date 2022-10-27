@@ -1,4 +1,5 @@
 using System;
+using BasedStrategy.Mouse;
 using UnityEngine;
 
 namespace BasedStrategy.Unit
@@ -10,16 +11,16 @@ namespace BasedStrategy.Unit
 
         private void Update()
         {
-            var stoppingDistance = 0.1f;
+            float stoppingDistance = 0.1f;
             if (Vector3.Distance(transform.position, _targetPosition) > stoppingDistance)
             {
                 Vector3 moveDirection = (_targetPosition - transform.position).normalized;
                 transform.position += moveDirection * _moveSpeed * Time.deltaTime;
-                
-                if (Input.GetKeyDown(KeyCode.D))
-                {
-                    Move(new Vector3(4,0,4));
-                }
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Move(MouseWorld.GetPosition());
             }
         }
 
