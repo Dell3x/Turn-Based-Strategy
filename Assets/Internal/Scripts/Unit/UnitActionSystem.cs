@@ -12,12 +12,12 @@ public class UnitActionSystem : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            HandleUnitSelection();
+            if(HandleUnitSelection()) return;
             _selectedUnit.Move(MouseWorld.GetPosition());
         }
     }
 
-    private void HandleUnitSelection()
+    private bool HandleUnitSelection()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _unitLayerMask))
@@ -25,7 +25,10 @@ public class UnitActionSystem : MonoBehaviour
             if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
             {
                 _selectedUnit = unit;
+                return true;
             }
         }
+
+        return false;
     }
 }
