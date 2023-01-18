@@ -1,34 +1,50 @@
+using System;
 using BasedStrategy.Mouse;
 using BasedStrategy.Unit;
 using UnityEngine;
 
-public class UnitActionSystem : MonoBehaviour
+namespace Actions
 {
-    [SerializeField] private Unit _selectedUnit;
-    [SerializeField] private LayerMask _unitLayerMask;
-
-
-    private void Update()
+    public class UnitActionSystem : MonoBehaviour
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            if(HandleUnitSelection()) return;
-            _selectedUnit.Move(MouseWorld.GetPosition());
-        }
-    }
+        public EventHandler OnSelectedUnit;
+    
+        [SerializeField] private Unit _selectedUnit;
+        [SerializeField] private LayerMask _unitLayerMask;
 
-    private bool HandleUnitSelection()
-    {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _unitLayerMask))
+
+        private void Update()
         {
-            if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
+            if (Input.GetMouseButtonDown(0))
             {
-                _selectedUnit = unit;
-                return true;
+                if(HandleUnitSelection()) return;
+                _selectedUnit.Move(MouseWorld.GetPosition());
             }
         }
 
-        return false;
+        private bool HandleUnitSelection()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out RaycastHit raycastHit, float.MaxValue, _unitLayerMask))
+            {
+                if (raycastHit.transform.TryGetComponent<Unit>(out Unit unit))
+                {
+                    SetSelectedUnit(unit);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private void SetSelectedUnit(Unit unit)
+        {
+            _selectedUnit = unit;
+        }
+
+        public Unit GetSelectedUnit()
+        {
+            return _selectedUnit;
+        }
     }
 }

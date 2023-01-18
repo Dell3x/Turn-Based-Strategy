@@ -820,6 +820,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _selectedUnit: {fileID: 326324850}
+  _unitLayerMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1001 &2095947505
 PrefabInstance:
   m_ObjectHideFlags: 0
