@@ -7,11 +7,22 @@ namespace Actions
 {
     public class UnitActionSystem : MonoBehaviour
     {
+        public static UnitActionSystem Instance;
+        
         public EventHandler OnSelectedUnit;
     
         [SerializeField] private Unit _selectedUnit;
         [SerializeField] private LayerMask _unitLayerMask;
 
+
+        private void Awake()
+        {
+            if (Instance = null)
+            {
+                return;
+            }
+            Instance = this;
+        }
 
         private void Update()
         {
@@ -40,6 +51,7 @@ namespace Actions
         private void SetSelectedUnit(Unit unit)
         {
             _selectedUnit = unit;
+            OnSelectedUnit?.Invoke(this, EventArgs.Empty);
         }
 
         public Unit GetSelectedUnit()
