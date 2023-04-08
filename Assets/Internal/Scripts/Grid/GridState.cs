@@ -51,7 +51,7 @@ namespace BasedStrategy.State
             }
         }
 
-        private GridCell GetGridCell(GridPosition gridPosition)
+        public GridCell GetGridCell(GridPosition gridPosition)
         {
             return _gridBoxes[gridPosition._xPosition, gridPosition._zPosition];
         }
