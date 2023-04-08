@@ -1,3 +1,4 @@
+using BasedStrategy.Views;
 using UnityEngine;
 
 namespace BasedStrategy.State
@@ -27,9 +28,9 @@ namespace BasedStrategy.State
             }
         }
 
-        public Vector3 GetWorldPosition(int x, int z)
+        public Vector3 GetWorldPosition(GridPosition gridPosition)
         {
-            return new Vector3(x, 0, z) * _cellSize;
+            return new Vector3(gridPosition._xPosition, 0, gridPosition._zPosition) * _cellSize;
         }
 
         public GridPosition GetGridPosition(Vector3 worldPosition)
@@ -37,16 +38,22 @@ namespace BasedStrategy.State
             return new GridPosition(Mathf.RoundToInt(worldPosition.x / _cellSize), Mathf.RoundToInt(worldPosition.z / _cellSize));
         }
 
-        public void CreateDebugGridBox(Transform debugPrefab)
+        public void CreateDebugGridBox(GridCellView gridCellView)
         {
             for (var x = 0; x < _gridWidth; x++)
             {
                 for (var z = 0; z < _gridHeight; z++)
                 {
-                    GameObject.Instantiate(debugPrefab, GetWorldPosition(x, z), Quaternion.identity);
+                    GridPosition gridPosition = new GridPosition(x, z);
+                    var currentGridCellView = GameObject.Instantiate(gridCellView, GetWorldPosition(gridPosition), Quaternion.identity);
+                    currentGridCellView.SetGridCell(GetGridCell(gridPosition));
                 }
-                
             }
+        }
+
+        private GridCell GetGridCell(GridPosition gridPosition)
+        {
+            return _gridBoxes[gridPosition._xPosition, gridPosition._zPosition];
         }
    
     }
