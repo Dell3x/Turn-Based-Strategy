@@ -1,24 +1,25 @@
-
-
 using BasedStrategy.State;
-using BasedStrategy.Unit;
+using BasedStrategy.GameUnit;
 
-public class GridCell
+namespace BasedStrategy.GameUnit
 {
-    public GridState _gridState;
-    public GridPosition _gridPosition;
-    public Unit _unit;
-
-    public Unit CellUnit => _unit;
-
-    public GridCell(GridState gridState, GridPosition gridPosition)
+    public class GridCell
     {
-        _gridState = gridState;
-        _gridPosition = gridPosition;
-    }
+        public GridState _gridState;
+        public GridPosition _gridPosition;
+        public Unit _unit;
 
-    public void SetUnit(Unit unit)
-    {
-        _unit = unit;
+        public Unit CellUnit => _unit;
+
+        public GridCell(GridState gridState, GridPosition gridPosition)
+        {
+            _gridState = gridState;
+            _gridPosition = gridPosition;
+        }
+
+        public void SetUnit(Unit unit)
+        {
+            _unit = unit;
+        }
     }
 }

@@ -1,7 +1,9 @@
 using System;
 using Actions;
-using BasedStrategy.Unit;
+using BasedStrategy.GameUnit;
+using BasedStrategy.ScriptableActions;
 using UnityEngine;
+using Zenject;
 
 namespace Views.BasedStrategy
 {
@@ -9,16 +11,19 @@ namespace Views.BasedStrategy
     {
         [SerializeField] private Unit _unit;
         [SerializeField] private MeshRenderer _meshRenderer;
+        
+        [Inject] private UnitActionSystem _unitActionSystem;
+        [Inject] private GlobalActions _globalActions;
 
         private void Start()
         {
-            UnitActionSystem.Instance.OnSelectedUnit += SelectUnit;
+            _globalActions.GameUnitActions.OnSelectedunit += SelectUnit;
             UpdateVisual();
         }
 
         private void OnDisable()
         {
-            UnitActionSystem.Instance.OnSelectedUnit -= SelectUnit;
+            _globalActions.GameUnitActions.OnSelectedunit -= SelectUnit;
         }
 
         private void SelectUnit(object sender, EventArgs empty)
@@ -28,7 +33,7 @@ namespace Views.BasedStrategy
 
         private void UpdateVisual()
         {
-            var currentUnit = UnitActionSystem.Instance.GetSelectedUnit();
+            var currentUnit = _unitActionSystem.GetSelectedUnit();
             if (currentUnit == _unit)
             {
                 _meshRenderer.enabled = true;

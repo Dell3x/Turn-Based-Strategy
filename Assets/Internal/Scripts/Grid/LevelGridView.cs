@@ -1,30 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using BasedStrategy.State;
-using BasedStrategy.Unit;
-using BasedStrategy.Views;
+using BasedStrategy.GameUnit;
+using BasedStrategy.ScriptableActions;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
+using Zenject;
 
-public class LevelGridView : MonoBehaviour
+namespace BasedStrategy.Views
 {
-    [SerializeField] private GridCellView _gridBoxView;
-
-    private GridState _gridState;
-    private void Awake()
+    public class LevelGridView : MonoBehaviour
     {
-        _gridState = new GridState(10, 10, 2f);
-        _gridState.CreateDebugGridBox(_gridBoxView);
-    }
+        [SerializeField] private GridCellView _gridBoxView;
 
-    public void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit)
-    {
-        GridCell gridCell = _gridState.GetGridCell(gridPosition);
-        gridCell.SetUnit(unit);
-    }
+        private GridState _gridState;
 
-    public Unit GetUnitFromGridPosition(GridPosition gridPosition)
-    {
-        GridCell gridCell = _gridState.GetGridCell(gridPosition);
-        return gridCell.CellUnit;
+        [Inject] private GlobalActions _globalActions;
+        private void Awake()
+        {
+            _globalActions.StateActions.OnUnitSetGridPosition += SetUnitOnGridPosition;
+            _globalActions.StateActions.OnUnitChangedGridPosition += UnitChangedGridPosition;
+            _gridState = new GridState(10, 10, 2f);
+            _gridState.CreateDebugGridBox(_gridBoxView);
+        }
+
+        private void OnDisable()
+        {
+            _globalActions.StateActions.OnUnitSetGridPosition -= SetUnitOnGridPosition;
+            _globalActions.StateActions.OnUnitChangedGridPosition -= UnitChangedGridPosition;
+        }
+
+        public GridPosition GetGridPosition(Vector3 worldPosition)
+        {
+            return _gridState.GetGridPosition(worldPosition);
+        }
+
+        private void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit)
+        {
+            GridCell gridCell = _gridState.GetGridCell(gridPosition);
+            gridCell.SetUnit(unit);
+        }
+
+        private Unit GetUnitFromGridPosition(GridPosition gridPosition)
+        {
+            GridCell gridCell = _gridState.GetGridCell(gridPosition);
+            return gridCell.CellUnit;
+        }
+
+        private void UnitChangedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
+        {
+             _globalActions.StateActions.RaiseUnitSetGridPosition(fromGridPosition, null);
+             _globalActions.StateActions.RaiseUnitSetGridPosition(toGridPosition, unit);
+        }
     }
 }

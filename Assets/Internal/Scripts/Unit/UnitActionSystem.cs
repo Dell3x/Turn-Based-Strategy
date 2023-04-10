@@ -1,28 +1,17 @@
-using System;
 using BasedStrategy.Mouse;
-using BasedStrategy.Unit;
+using BasedStrategy.GameUnit;
+using BasedStrategy.ScriptableActions;
 using UnityEngine;
+using Zenject;
 
 namespace Actions
 {
     public class UnitActionSystem : MonoBehaviour
     {
-        public static UnitActionSystem Instance;
-        
-        public EventHandler OnSelectedUnit;
-    
         [SerializeField] private Unit _selectedUnit;
         [SerializeField] private LayerMask _unitLayerMask;
 
-
-        private void Awake()
-        {
-            if (Instance = null)
-            {
-                return;
-            }
-            Instance = this;
-        }
+        [Inject] private GlobalActions _globalActions;
 
         private void Update()
         {
@@ -51,7 +40,7 @@ namespace Actions
         private void SetSelectedUnit(Unit unit)
         {
             _selectedUnit = unit;
-            OnSelectedUnit?.Invoke(this, EventArgs.Empty);
+            _globalActions.GameUnitActions.RaiseSelectedUnitActions(this);
         }
 
         public Unit GetSelectedUnit()
