@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using BasedStrategy.State;
 using BasedStrategy.GameUnit;
 
@@ -7,19 +8,25 @@ namespace BasedStrategy.GameUnit
     {
         public GridState _gridState;
         public GridPosition _gridPosition;
-        public Unit _unit;
+        public List<Unit> _units;
 
-        public Unit CellUnit => _unit;
+        public List<Unit> CellUnits => _units;
 
         public GridCell(GridState gridState, GridPosition gridPosition)
         {
             _gridState = gridState;
             _gridPosition = gridPosition;
+            _units = new List<Unit>();
         }
 
-        public void SetUnit(Unit unit)
+        public void AddUnit(Unit unit)
         {
-            _unit = unit;
+            _units.Add(unit);
+        }
+
+        public void RemoveUnit(Unit unit)
+        {
+            _units.Remove(unit);
         }
     }
 }

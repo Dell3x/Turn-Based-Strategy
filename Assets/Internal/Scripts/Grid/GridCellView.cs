@@ -27,7 +27,13 @@ namespace BasedStrategy.Views
 
         private void UpdateCellTextInfo()
         {
-            _gridText.text = $"{_gridCell._gridPosition} \n {_gridCell.CellUnit?.name}";
+            var unitString = "";
+            foreach (var unit in _gridCell.CellUnits)
+            {
+                unitString += unit?.name + "\n";
+            }
+
+            _gridText.text = $"{_gridCell._gridPosition} \n {unitString}";
         }
     }
 }

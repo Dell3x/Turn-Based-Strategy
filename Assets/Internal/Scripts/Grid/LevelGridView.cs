@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BasedStrategy.State;
 using BasedStrategy.GameUnit;
 using BasedStrategy.ScriptableActions;
@@ -34,22 +35,30 @@ namespace BasedStrategy.Views
             return _gridState.GetGridPosition(worldPosition);
         }
 
-        private void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit)
+        private void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit, bool isRemove)
         {
             GridCell gridCell = _gridState.GetGridCell(gridPosition);
-            gridCell.SetUnit(unit);
+            
+            if (!isRemove)
+            {
+                gridCell.AddUnit(unit);
+            }
+            else
+            {
+                gridCell.RemoveUnit(unit);
+            }
         }
 
-        private Unit GetUnitFromGridPosition(GridPosition gridPosition)
+        private List<Unit> GetUnitFromGridPosition(GridPosition gridPosition)
         {
             GridCell gridCell = _gridState.GetGridCell(gridPosition);
-            return gridCell.CellUnit;
+            return gridCell.CellUnits;
         }
 
         private void UnitChangedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
         {
-             _globalActions.StateActions.RaiseUnitSetGridPosition(fromGridPosition, null);
-             _globalActions.StateActions.RaiseUnitSetGridPosition(toGridPosition, unit);
+             _globalActions.StateActions.RaiseUnitSetGridPosition(fromGridPosition, unit, true);
+             _globalActions.StateActions.RaiseUnitSetGridPosition(toGridPosition, unit, false);
         }
     }
 }

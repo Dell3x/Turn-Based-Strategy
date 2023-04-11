@@ -67,7 +67,7 @@ namespace BasedStrategy.GameUnit
         private void ChangeCurrentPosition()
         {
             _currentGridPosition = _levelGridView.GetGridPosition(transform.position);
-            _globalActions.StateActions.RaiseUnitSetGridPosition(_currentGridPosition, this);
+            _globalActions.StateActions.RaiseUnitSetGridPosition(_currentGridPosition, this, false);
         }
     }
 }
