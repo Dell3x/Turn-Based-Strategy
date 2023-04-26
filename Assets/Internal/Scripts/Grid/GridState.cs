@@ -39,14 +39,14 @@ namespace BasedStrategy.State
             return new GridPosition(Mathf.RoundToInt(worldPosition.x / _cellSize), Mathf.RoundToInt(worldPosition.z / _cellSize));
         }
 
-        public void CreateDebugGridBox(GridCellView gridCellView)
+        public void CreateDebugGridBox(GridCellView gridCellView, GameObject parentGameObject)
         {
             for (var x = 0; x < _gridWidth; x++)
             {
                 for (var z = 0; z < _gridHeight; z++)
                 {
                     GridPosition gridPosition = new GridPosition(x, z);
-                    var currentGridCellView = GameObject.Instantiate(gridCellView, GetWorldPosition(gridPosition), Quaternion.identity);
+                    var currentGridCellView = GameObject.Instantiate(gridCellView, GetWorldPosition(gridPosition), Quaternion.identity, parentGameObject.transform);
                     currentGridCellView.SetGridCell(GetGridCell(gridPosition));
                 }
             }

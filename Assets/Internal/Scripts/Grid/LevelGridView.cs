@@ -21,7 +21,7 @@ namespace BasedStrategy.Views
             _globalActions.StateActions.OnUnitSetGridPosition += SetUnitOnGridPosition;
             _globalActions.StateActions.OnUnitChangedGridPosition += UnitChangedGridPosition;
             _gridState = new GridState(10, 10, 2f);
-            _gridState.CreateDebugGridBox(_gridBoxView);
+            _gridState.CreateDebugGridBox(_gridBoxView, this.gameObject);
         }
 
         private void OnDisable()
