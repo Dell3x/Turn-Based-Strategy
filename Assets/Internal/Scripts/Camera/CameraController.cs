@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using UniRx;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -17,18 +18,24 @@ public class CameraController : MonoBehaviour
 
     private CinemachineTransposer _cinemachineTransposer;
     private Vector3 _followOffset;
+    private IDisposable _cameraControlUpdate;
 
     private void Awake()
     {
         _cinemachineTransposer = _cinemachineVirtualCamera.GetCinemachineComponent<CinemachineTransposer>();
         _followOffset = _cinemachineTransposer.m_FollowOffset;
+
+        _cameraControlUpdate = Observable.EveryUpdate().Subscribe(_ =>
+        {
+            CameraMovement();
+            CameraRotation();
+            CameraZoom();
+        });
     }
 
-    private void Update()
+    private void OnDisable()
     {
-        CameraMovement();
-        CameraRotation();
-        CameraZoom();
+        _cameraControlUpdate.Dispose();
     }
 
     private void CameraMovement()

@@ -2,6 +2,7 @@ using System;
 using BasedStrategy.Mouse;
 using BasedStrategy.ScriptableActions;
 using BasedStrategy.Views;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -19,6 +20,7 @@ namespace BasedStrategy.GameUnit
         
         private Vector3 _targetPosition;
         private GridPosition _currentGridPosition;
+        private IDisposable _unitMovementUpdate;
 
         [Inject] private LevelGridView _levelGridView;
         [Inject] private GlobalActions _globalActions;
@@ -26,6 +28,12 @@ namespace BasedStrategy.GameUnit
         private void Awake()
         {
             _targetPosition = transform.position;
+
+            _unitMovementUpdate = Observable.EveryUpdate().Subscribe(_ =>
+            {
+                UnitDirectionalMovement();
+            });
+
         }
 
         private void Start()
@@ -33,7 +41,7 @@ namespace BasedStrategy.GameUnit
            ChangeCurrentPosition();
         }
 
-        private void Update()
+        private void UnitDirectionalMovement()
         {
             float stoppingDistance = 0.1f;
             if (Vector3.Distance(transform.position, _targetPosition) > stoppingDistance)
@@ -56,7 +64,6 @@ namespace BasedStrategy.GameUnit
                 _globalActions.StateActions.RaiseUnitChangedGridPosition(this, _currentGridPosition, newGridPosition);
                 _currentGridPosition = newGridPosition;
             }
-
         }
 
         public void Move(Vector3 targetPosition)

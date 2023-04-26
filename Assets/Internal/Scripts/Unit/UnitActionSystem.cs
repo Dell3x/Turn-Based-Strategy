@@ -1,8 +1,10 @@
+using System;
 using BasedStrategy.Mouse;
-using BasedStrategy.GameUnit;
 using BasedStrategy.ScriptableActions;
+using UniRx;
 using UnityEngine;
 using Zenject;
+using Unit = BasedStrategy.GameUnit.Unit;
 
 namespace Actions
 {
@@ -12,14 +14,24 @@ namespace Actions
         [SerializeField] private LayerMask _unitLayerMask;
 
         [Inject] private GlobalActions _globalActions;
+        
+        private IDisposable _unitSelectionUpdate;
 
-        private void Update()
+        private void Awake()
         {
-            if (Input.GetMouseButtonDown(0))
+            _unitSelectionUpdate = Observable.EveryUpdate().Subscribe(_ =>
             {
-                if(HandleUnitSelection()) return;
-                _selectedUnit.Move(MouseWorld.GetPosition());
-            }
+                if (Input.GetMouseButtonDown(0))
+                {
+                    if (HandleUnitSelection()) return;
+                    _selectedUnit.Move(MouseWorld.GetPosition());
+                }
+            });
+        }
+
+        private void OnDisable()
+        {
+            _unitSelectionUpdate.Dispose();
         }
 
         private bool HandleUnitSelection()
