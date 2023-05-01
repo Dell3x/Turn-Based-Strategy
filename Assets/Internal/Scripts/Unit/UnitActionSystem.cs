@@ -1,6 +1,7 @@
 using System;
 using BasedStrategy.Mouse;
 using BasedStrategy.ScriptableActions;
+using BasedStrategy.Views;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -12,10 +13,13 @@ namespace Actions
     {
         [SerializeField] private Unit _selectedUnit;
         [SerializeField] private LayerMask _unitLayerMask;
-
-        [Inject] private GlobalActions _globalActions;
         
         private IDisposable _unitSelectionUpdate;
+
+        [Inject] private GlobalActions _globalActions;
+        [Inject] private LevelGridView _levelGridView;
+
+        
 
         private void Awake()
         {
@@ -24,7 +28,12 @@ namespace Actions
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (HandleUnitSelection()) return;
-                    _selectedUnit.Move(MouseWorld.GetPosition());
+                    var mouseGridPosition = _levelGridView.GetGridPosition(MouseWorld.GetPosition());
+                    if (_selectedUnit.GetUnitMovement().IsMovingForValidPosition(mouseGridPosition))
+                    {
+                        _selectedUnit.GetUnitMovement().Move(mouseGridPosition);
+
+                    }
                 }
             });
         }

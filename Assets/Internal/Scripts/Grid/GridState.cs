@@ -38,7 +38,19 @@ namespace BasedStrategy.State
         {
             return new GridPosition(Mathf.RoundToInt(worldPosition.x / _cellSize), Mathf.RoundToInt(worldPosition.z / _cellSize));
         }
+        
+        public GridCell GetGridCell(GridPosition gridPosition)
+        {
+            return _gridBoxes[gridPosition._xPosition, gridPosition._zPosition];
+        }
 
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            return gridPosition._xPosition >= 0 && gridPosition._zPosition >= 0 &&
+                   gridPosition._xPosition < _gridWidth && gridPosition._zPosition < _gridHeight;
+        }
+
+       
         public void CreateDebugGridBox(GridCellView gridCellView, GameObject parentGameObject)
         {
             for (var x = 0; x < _gridWidth; x++)
@@ -51,11 +63,5 @@ namespace BasedStrategy.State
                 }
             }
         }
-
-        public GridCell GetGridCell(GridPosition gridPosition)
-        {
-            return _gridBoxes[gridPosition._xPosition, gridPosition._zPosition];
-        }
-   
     }
 }

@@ -34,6 +34,22 @@ namespace BasedStrategy.Views
         {
             return _gridState.GetGridPosition(worldPosition);
         }
+        public Vector3 GetWorldGridPosition(GridPosition gridPosition)
+        {
+            return _gridState.GetWorldPosition(gridPosition);
+        }
+
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            return _gridState.IsValidGridPosition(gridPosition);
+        }
+        
+        public bool IsHasAnyUnitOnGridCell(GridPosition gridPosition)
+        {
+            var gridCell = _gridState.GetGridCell(gridPosition);
+            return gridCell.HasAnyUnit();
+        }
+
 
         private void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit, bool isRemove)
         {
@@ -54,6 +70,7 @@ namespace BasedStrategy.Views
             GridCell gridCell = _gridState.GetGridCell(gridPosition);
             return gridCell.CellUnits;
         }
+        
 
         private void UnitChangedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
         {

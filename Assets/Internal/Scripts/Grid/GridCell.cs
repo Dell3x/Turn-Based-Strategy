@@ -28,5 +28,10 @@ namespace BasedStrategy.GameUnit
         {
             _units.Remove(unit);
         }
+
+        public bool HasAnyUnit()
+        {
+            return _units.Count > 0;
+        }
     }
 }

@@ -10,65 +10,44 @@ namespace BasedStrategy.GameUnit
 {
     public class Unit : MonoBehaviour
     {
-        [SerializeField] private Animator _unitAnimator;
-        [Header("Parameters")]
-        [SerializeField] private float _moveSpeed;
-        [SerializeField] private float _rotationSpeed;
+        [SerializeField] private UnitMovement _unitMovement;
         
-
-        private const string _IsWalking = "IsWalking";
-        
-        private Vector3 _targetPosition;
         private GridPosition _currentGridPosition;
-        private IDisposable _unitMovementUpdate;
+        private IDisposable _gridPositionUpdate;
 
         [Inject] private LevelGridView _levelGridView;
         [Inject] private GlobalActions _globalActions;
 
-        private void Awake()
-        {
-            _targetPosition = transform.position;
-
-            _unitMovementUpdate = Observable.EveryUpdate().Subscribe(_ =>
-            {
-                UnitDirectionalMovement();
-            });
-
-        }
-
         private void Start()
         {
            ChangeCurrentPosition();
+           
+          _gridPositionUpdate = Observable.EveryUpdate().Subscribe(_ =>
+           {
+               GridPosition newGridPosition = _levelGridView.GetGridPosition(transform.position);
+
+               if (newGridPosition != _currentGridPosition)
+               {
+                   _globalActions.StateActions.RaiseUnitChangedGridPosition(this, _currentGridPosition,
+                       newGridPosition);
+                   _currentGridPosition = newGridPosition;
+               }
+           });
         }
 
-        private void UnitDirectionalMovement()
+        private void OnDisable()
         {
-            float stoppingDistance = 0.1f;
-            if (Vector3.Distance(transform.position, _targetPosition) > stoppingDistance)
-            {
-                _unitAnimator.SetBool(_IsWalking, true);
-                Vector3 moveDirection = (_targetPosition - transform.position).normalized;
-                transform.position += moveDirection * _moveSpeed * Time.deltaTime;
-                
-                transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotationSpeed);
-            }
-            else
-            {
-                _unitAnimator.SetBool(_IsWalking, false);
-            }
-
-            GridPosition newGridPosition = _levelGridView.GetGridPosition(transform.position);
-            
-            if (newGridPosition != _currentGridPosition)
-            {
-                _globalActions.StateActions.RaiseUnitChangedGridPosition(this, _currentGridPosition, newGridPosition);
-                _currentGridPosition = newGridPosition;
-            }
+            _gridPositionUpdate.Dispose();
         }
 
-        public void Move(Vector3 targetPosition)
+        public UnitMovement GetUnitMovement()
         {
-            _targetPosition = targetPosition;
+            return _unitMovement;
+        }
+
+        public GridPosition GetGridPosition()
+        {
+            return _currentGridPosition;
         }
 
         private void ChangeCurrentPosition()
