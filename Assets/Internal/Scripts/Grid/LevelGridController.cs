@@ -9,7 +9,7 @@ using Zenject;
 
 namespace BasedStrategy.Views
 {
-    public class LevelGridView : MonoBehaviour
+    public class LevelGridController : MonoBehaviour
     {
         [SerializeField] private GridCellView _gridBoxView;
 

@@ -50,7 +50,6 @@ namespace BasedStrategy.State
                    gridPosition._xPosition < _gridWidth && gridPosition._zPosition < _gridHeight;
         }
 
-       
         public void CreateDebugGridBox(GridCellView gridCellView, GameObject parentGameObject)
         {
             for (var x = 0; x < _gridWidth; x++)

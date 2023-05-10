@@ -17,7 +17,7 @@ namespace Actions
         private IDisposable _unitSelectionUpdate;
 
         [Inject] private GlobalActions _globalActions;
-        [Inject] private LevelGridView _levelGridView;
+        [Inject] private LevelGridController _levelGridController;
 
         
 
@@ -28,7 +28,7 @@ namespace Actions
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (HandleUnitSelection()) return;
-                    var mouseGridPosition = _levelGridView.GetGridPosition(MouseWorld.GetPosition());
+                    var mouseGridPosition = _levelGridController.GetGridPosition(MouseWorld.GetPosition());
                     if (_selectedUnit.GetUnitMovement().IsMovingForValidPosition(mouseGridPosition))
                     {
                         _selectedUnit.GetUnitMovement().Move(mouseGridPosition);

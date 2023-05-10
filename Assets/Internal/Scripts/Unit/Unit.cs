@@ -15,7 +15,7 @@ namespace BasedStrategy.GameUnit
         private GridPosition _currentGridPosition;
         private IDisposable _gridPositionUpdate;
 
-        [Inject] private LevelGridView _levelGridView;
+        [Inject] private LevelGridController _levelGridController;
         [Inject] private GlobalActions _globalActions;
 
         private void Start()
@@ -24,7 +24,7 @@ namespace BasedStrategy.GameUnit
            
           _gridPositionUpdate = Observable.EveryUpdate().Subscribe(_ =>
            {
-               GridPosition newGridPosition = _levelGridView.GetGridPosition(transform.position);
+               GridPosition newGridPosition = _levelGridController.GetGridPosition(transform.position);
 
                if (newGridPosition != _currentGridPosition)
                {
@@ -52,7 +52,7 @@ namespace BasedStrategy.GameUnit
 
         private void ChangeCurrentPosition()
         {
-            _currentGridPosition = _levelGridView.GetGridPosition(transform.position);
+            _currentGridPosition = _levelGridController.GetGridPosition(transform.position);
             _globalActions.StateActions.RaiseUnitSetGridPosition(_currentGridPosition, this, false);
         }
     }

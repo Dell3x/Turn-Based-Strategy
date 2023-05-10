@@ -18,7 +18,7 @@ namespace BasedStrategy.GameUnit
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _rotationSpeed;
 
-        [Inject] private LevelGridView _levelGridView;
+        [Inject] private LevelGridController _levelGridController;
 
         private const string _IsWalking = "IsWalking";
 
@@ -40,7 +40,7 @@ namespace BasedStrategy.GameUnit
 
         public void Move(GridPosition targetGridPosition)
         {
-            _targetPosition = _levelGridView.GetWorldGridPosition(targetGridPosition);
+            _targetPosition = _levelGridController.GetWorldGridPosition(targetGridPosition);
         }
 
         public bool IsMovingForValidPosition(GridPosition gridPosition)
@@ -61,7 +61,7 @@ namespace BasedStrategy.GameUnit
                     GridPosition gridPositionOffset = new GridPosition(x, z);
                     GridPosition currentGridPosition = unitGridPosition + gridPositionOffset;
 
-                    if (!_levelGridView.IsValidGridPosition(currentGridPosition))
+                    if (!_levelGridController.IsValidGridPosition(currentGridPosition))
                     {
                         continue;
                     }
@@ -71,7 +71,7 @@ namespace BasedStrategy.GameUnit
                         continue;
                     }
 
-                    if (_levelGridView.IsHasAnyUnitOnGridCell(currentGridPosition))
+                    if (_levelGridController.IsHasAnyUnitOnGridCell(currentGridPosition))
                     {
                         continue;
                     }
