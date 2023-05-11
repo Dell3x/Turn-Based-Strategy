@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using BasedStrategy.State;
 using BasedStrategy.GameUnit;
 using BasedStrategy.ScriptableActions;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -29,28 +27,7 @@ namespace BasedStrategy.Views
             _globalActions.StateActions.OnUnitSetGridPosition -= SetUnitOnGridPosition;
             _globalActions.StateActions.OnUnitChangedGridPosition -= UnitChangedGridPosition;
         }
-
-        public GridPosition GetGridPosition(Vector3 worldPosition)
-        {
-            return _gridState.GetGridPosition(worldPosition);
-        }
-        public Vector3 GetWorldGridPosition(GridPosition gridPosition)
-        {
-            return _gridState.GetWorldPosition(gridPosition);
-        }
-
-        public bool IsValidGridPosition(GridPosition gridPosition)
-        {
-            return _gridState.IsValidGridPosition(gridPosition);
-        }
-        
-        public bool IsHasAnyUnitOnGridCell(GridPosition gridPosition)
-        {
-            var gridCell = _gridState.GetGridCell(gridPosition);
-            return gridCell.HasAnyUnit();
-        }
-
-
+       
         private void SetUnitOnGridPosition(GridPosition gridPosition, Unit unit, bool isRemove)
         {
             GridCell gridCell = _gridState.GetGridCell(gridPosition);
@@ -71,11 +48,40 @@ namespace BasedStrategy.Views
             return gridCell.CellUnits;
         }
         
-
         private void UnitChangedGridPosition(Unit unit, GridPosition fromGridPosition, GridPosition toGridPosition)
         {
              _globalActions.StateActions.RaiseUnitSetGridPosition(fromGridPosition, unit, true);
              _globalActions.StateActions.RaiseUnitSetGridPosition(toGridPosition, unit, false);
+        }
+        
+        public GridPosition GetGridPosition(Vector3 worldPosition)
+        {
+            return _gridState.GetGridPosition(worldPosition);
+        }
+        public Vector3 GetWorldGridPosition(GridPosition gridPosition)
+        {
+            return _gridState.GetWorldPosition(gridPosition);
+        }
+
+        public bool IsValidGridPosition(GridPosition gridPosition)
+        {
+            return _gridState.IsValidGridPosition(gridPosition);
+        }
+        
+        public bool IsHasAnyUnitOnGridCell(GridPosition gridPosition)
+        {
+            var gridCell = _gridState.GetGridCell(gridPosition);
+            return gridCell.HasAnyUnit();
+        }
+
+        public int GetWidth()
+        {
+            return _gridState.GetWidth();
+        }
+
+        public int GetHeight()
+        {
+            return _gridState.GetHeight();
         }
     }
 }

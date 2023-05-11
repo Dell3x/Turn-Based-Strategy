@@ -19,8 +19,6 @@ namespace Actions
         [Inject] private GlobalActions _globalActions;
         [Inject] private LevelGridController _levelGridController;
 
-        
-
         private void Awake()
         {
             _unitSelectionUpdate = Observable.EveryUpdate().Subscribe(_ =>
@@ -32,7 +30,6 @@ namespace Actions
                     if (_selectedUnit.GetUnitMovement().IsMovingForValidPosition(mouseGridPosition))
                     {
                         _selectedUnit.GetUnitMovement().Move(mouseGridPosition);
-
                     }
                 }
             });

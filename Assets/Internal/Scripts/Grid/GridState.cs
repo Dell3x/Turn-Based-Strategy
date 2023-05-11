@@ -62,5 +62,15 @@ namespace BasedStrategy.State
                 }
             }
         }
+
+        public int GetWidth()
+        {
+            return _gridWidth;
+        }
+
+        public int GetHeight()
+        {
+            return _gridHeight;
+        }
     }
 }

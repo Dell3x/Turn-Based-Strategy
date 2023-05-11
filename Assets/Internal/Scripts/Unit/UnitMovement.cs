@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Actions;
+using BasedStrategy.ScriptableActions;
 using BasedStrategy.Views;
 using UniRx;
 using UnityEngine;
@@ -12,13 +14,15 @@ namespace BasedStrategy.GameUnit
         [SerializeField] private Animator _unitAnimator;
         [SerializeField] private Unit _unit;
 
-        [Header("Parameters")] [SerializeField]
-        private int _maxMoveDistance;
+        [Header("Parameters")] 
+        [SerializeField] private int _maxMoveDistance;
 
         [SerializeField] private float _moveSpeed;
         [SerializeField] private float _rotationSpeed;
 
         [Inject] private LevelGridController _levelGridController;
+        [Inject] private GlobalActions _globalActions;
+        [Inject] private UnitActionSystem _unitActionSystem;
 
         private const string _IsWalking = "IsWalking";
 
@@ -29,7 +33,6 @@ namespace BasedStrategy.GameUnit
         private void Awake()
         {
             _targetPosition = transform.position;
-
             _unitMovementUpdate = Observable.EveryUpdate().Subscribe(_ => { UnitDirectionalMovement(); });
         }
 
@@ -91,7 +94,6 @@ namespace BasedStrategy.GameUnit
                 _unitAnimator.SetBool(_IsWalking, true);
                 Vector3 moveDirection = (_targetPosition - transform.position).normalized;
                 transform.position += moveDirection * _moveSpeed * Time.deltaTime;
-
                 transform.forward = Vector3.Lerp(transform.forward, moveDirection, Time.deltaTime * _rotationSpeed);
             }
             else

@@ -1,4 +1,5 @@
 using System;
+using BasedStrategy.GameUnit;
 using UnityEngine;
 
 namespace BasedStrategy.ScriptableActions
@@ -7,11 +8,11 @@ namespace BasedStrategy.ScriptableActions
 
     public class UnitActions : ScriptableObject
     {
-        public EventHandler OnSelectedunit;
+        public EventHandler OnSelectedUnit;
 
         public void RaiseSelectedUnitActions(object sender)
         {
-            OnSelectedunit?.Invoke(sender, EventArgs.Empty);
+            OnSelectedUnit?.Invoke(sender, EventArgs.Empty);
         }
     }
 }

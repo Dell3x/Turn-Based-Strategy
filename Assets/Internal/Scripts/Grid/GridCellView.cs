@@ -13,8 +13,6 @@ namespace BasedStrategy.Views
 
         private GridCell _gridCell;
 
-        [Inject] private GlobalActions _globalActions;
-
         public void SetGridCell(GridCell gridCell)
         {
             _gridCell = gridCell;

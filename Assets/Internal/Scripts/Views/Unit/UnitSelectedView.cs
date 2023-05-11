@@ -17,13 +17,13 @@ namespace Views.BasedStrategy
 
         private void Start()
         {
-            _globalActions.GameUnitActions.OnSelectedunit += SelectUnit;
+            _globalActions.GameUnitActions.OnSelectedUnit += SelectUnit;
             UpdateVisual();
         }
 
         private void OnDisable()
         {
-            _globalActions.GameUnitActions.OnSelectedunit -= SelectUnit;
+            _globalActions.GameUnitActions.OnSelectedUnit -= SelectUnit;
         }
 
         private void SelectUnit(object sender, EventArgs empty)
