@@ -8,11 +8,11 @@ namespace BasedStrategy.ScriptableActions
 
     public class UnitActions : ScriptableObject
     {
-        public EventHandler OnSelectedUnit;
+        public Action OnSelectedUnit;
 
-        public void RaiseSelectedUnitActions(object sender)
+        public void RaiseSelectedUnitActions()
         {
-            OnSelectedUnit?.Invoke(sender, EventArgs.Empty);
+            OnSelectedUnit?.Invoke();
         }
     }
 }

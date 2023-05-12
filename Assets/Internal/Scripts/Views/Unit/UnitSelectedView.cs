@@ -26,7 +26,7 @@ namespace Views.BasedStrategy
             _globalActions.GameUnitActions.OnSelectedUnit -= SelectUnit;
         }
 
-        private void SelectUnit(object sender, EventArgs empty)
+        private void SelectUnit()
         {
             UpdateVisual();
         }

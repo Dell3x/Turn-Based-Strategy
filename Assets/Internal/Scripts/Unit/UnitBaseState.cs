@@ -9,6 +9,7 @@ namespace BasedStrategy.GameUnit
     {
         private protected Unit _unit;
         private protected bool _isAnyAction;
+        private protected Action<bool> onActionComplete;
 
         protected virtual void Awake()
         {

@@ -36,8 +36,9 @@ namespace BasedStrategy.GameUnit
             _unitMovementUpdate.Dispose();
         }
 
-        public void Move(GridPosition targetGridPosition)
+        public void Move(GridPosition targetGridPosition, Action<bool> onMovingActive)
         {
+            onActionComplete = onMovingActive;
             _targetPosition = _levelGridController.GetWorldGridPosition(targetGridPosition);
             _isAnyAction = true;
         }
@@ -99,6 +100,7 @@ namespace BasedStrategy.GameUnit
             else
             {
                 _isAnyAction = false;
+                onActionComplete?.Invoke(false);
                 _unitAnimator.SetBool(_IsWalking, false);
             }
             

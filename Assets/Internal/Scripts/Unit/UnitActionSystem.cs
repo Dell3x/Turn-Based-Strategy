@@ -13,7 +13,8 @@ namespace Actions
     {
         [SerializeField] private Unit _selectedUnit;
         [SerializeField] private LayerMask _unitLayerMask;
-        
+
+        private bool _isUnitBusy;
         private IDisposable _unitSelectionUpdate;
 
         [Inject] private GlobalActions _globalActions;
@@ -23,19 +24,30 @@ namespace Actions
         {
             _unitSelectionUpdate = Observable.EveryUpdate().Subscribe(_ =>
             {
+                if (_isUnitBusy)
+                {
+                    return;
+                }
+                
                 if (Input.GetMouseButtonDown(0))
                 {
-                    if (HandleUnitSelection()) return;
+                    if (HandleUnitSelection())
+                    {
+                        return;
+                    }
+                    
                     var mouseGridPosition = _levelGridController.GetGridPosition(MouseWorld.GetPosition());
                     if (_selectedUnit.GetUnitMovement().IsMovingForValidPosition(mouseGridPosition))
                     {
-                        _selectedUnit.GetUnitMovement().Move(mouseGridPosition);
+                        SetUnitBusy(true);
+                        _selectedUnit.GetUnitMovement().Move(mouseGridPosition, SetUnitBusy);
                     }
                 }
 
                 if (Input.GetMouseButtonDown(1))
                 {
-                    _selectedUnit.GetUnitSpin().SetSpinning(true);
+                    SetUnitBusy(true);
+                    _selectedUnit.GetUnitSpin().SetSpinning(SetUnitBusy);
                 }
             });
         }
@@ -43,6 +55,12 @@ namespace Actions
         private void OnDisable()
         {
             _unitSelectionUpdate.Dispose();
+        }
+
+        private void SetUnitBusy(bool isBusy)
+        {
+            _isUnitBusy = isBusy;
+            Debug.Log(_isUnitBusy);
         }
 
         private bool HandleUnitSelection()
@@ -63,7 +81,7 @@ namespace Actions
         private void SetSelectedUnit(Unit unit)
         {
             _selectedUnit = unit;
-            _globalActions.GameUnitActions.RaiseSelectedUnitActions(this);
+            _globalActions.GameUnitActions.RaiseSelectedUnitActions();
         }
 
         public Unit GetSelectedUnit()
