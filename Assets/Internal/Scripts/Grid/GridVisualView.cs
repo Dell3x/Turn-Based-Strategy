@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class GridVisualView : MonoBehaviour
+namespace BasedStrategy.Views
 {
-    [SerializeField] private MeshRenderer _meshRenderer;
-
-    public void SetActivation(bool isActive)
+    public class GridVisualView : MonoBehaviour
     {
-        _meshRenderer.enabled = isActive;
+        [SerializeField] private MeshRenderer _meshRenderer;
+
+        public void SetActivation(bool isActive)
+        {
+            _meshRenderer.enabled = isActive;
+        }
     }
 }

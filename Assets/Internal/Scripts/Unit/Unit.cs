@@ -11,6 +11,7 @@ namespace BasedStrategy.GameUnit
     public class Unit : MonoBehaviour
     {
         [SerializeField] private UnitMovement _unitMovement;
+        [SerializeField] private UnitSpin _unitSpin;
         
         private GridPosition _currentGridPosition;
         private IDisposable _gridPositionUpdate;
@@ -43,6 +44,11 @@ namespace BasedStrategy.GameUnit
         public UnitMovement GetUnitMovement()
         {
             return _unitMovement;
+        }
+
+        public UnitSpin GetUnitSpin()
+        {
+            return _unitSpin;
         }
 
         public GridPosition GetGridPosition()

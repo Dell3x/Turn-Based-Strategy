@@ -32,6 +32,11 @@ namespace Actions
                         _selectedUnit.GetUnitMovement().Move(mouseGridPosition);
                     }
                 }
+
+                if (Input.GetMouseButtonDown(1))
+                {
+                    _selectedUnit.GetUnitSpin().SetSpinning(true);
+                }
             });
         }
 
